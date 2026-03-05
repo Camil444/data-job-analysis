@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Aeonik';
+  src: url('/fonts/AeonikTRIAL-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aeonik';
+  src: url('/fonts/AeonikTRIAL-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aeonik';
+  src: url('/fonts/AeonikTRIAL-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aeonik';
+  src: url('/fonts/AeonikTRIAL-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aeonik';
+  src: url('/fonts/AeonikTRIAL-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #FFFFFF;
+  --bg-secondary: #F8F9FB;
+  --card-bg: #FFFFFF;
+  --text: #1A1D27;
+  --text-secondary: #4B5563;
+  --text-muted: #6B7280;
+  --text-muted-light: #9CA3AF;
+  --border: #E5E7EB;
+  --accent: #6366F1;
+  --input-bg: #F8F9FB;
+  --icon-bg: #F3F4F6;
+  --shadow: 2px 3px 12px 0px rgba(0,0,0,0.06);
+  --skeleton-bg: #F3F4F6;
+  --scrollbar-track: #F1F5F9;
+  --scrollbar-thumb: #CBD5E1;
+  --scrollbar-hover: #94A3B8;
+  --table-alt: #F8F9FB;
+  --table-border: #F1F5F9;
+  --hover-overlay: rgba(99,102,241,0.04);
+  --active-bg: rgba(99,102,241,0.08);
+  --toggle-inactive-bg: #F1F5F9;
+  --toggle-inactive-border: #E5E7EB;
+  --filter-inactive-bg: #F1F5F9;
+  --filter-inactive-border: #E5E7EB;
+  --icon-filter: none;
+}
+
+[data-theme="dark"] {
+  --bg: #0F1117;
+  --bg-secondary: #1A1D27;
+  --card-bg: #1A1D27;
+  --text: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-muted-light: #64748B;
+  --border: #2D3344;
+  --accent: #818CF8;
+  --input-bg: #252836;
+  --icon-bg: #252836;
+  --shadow: 2px 3px 12px 0px rgba(0,0,0,0.3);
+  --skeleton-bg: #252836;
+  --scrollbar-track: #1A1D27;
+  --scrollbar-thumb: #3B4252;
+  --scrollbar-hover: #4C566A;
+  --table-alt: #1E2130;
+  --table-border: #252836;
+  --hover-overlay: rgba(129,140,248,0.06);
+  --active-bg: rgba(129,140,248,0.12);
+  --toggle-inactive-bg: #252836;
+  --toggle-inactive-border: #2D3344;
+  --filter-inactive-bg: #252836;
+  --filter-inactive-border: #2D3344;
+  --icon-filter: invert(1);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Aeonik', Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* Recharts overrides */
+.recharts-default-tooltip {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
+}

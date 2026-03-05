@@ -32,7 +32,6 @@ build/
 
 # Misc
 *.log
-dashboard/
 
 # Claude
 CLAUDE.md
