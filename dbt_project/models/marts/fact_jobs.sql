@@ -11,6 +11,7 @@ final as (
         raw_title,
         normalized_title_id,
         company_name,
+        company_sector,
 
         -- Localisation : parser ville et departement
         location_city,

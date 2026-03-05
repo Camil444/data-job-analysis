@@ -162,6 +162,7 @@ def extract() -> pd.DataFrame:
                     'education_level': education,
                     'date_posted': offer.get('dateCreation', ''),
                     'remote_policy': _deduce_remote(offer),
+                    'company_sector': offer.get('secteurActiviteLibelle', ''),
                     'job_url': (offer.get('origineOffre') or {}).get('urlOrigine')
                                or f"https://candidat.francetravail.fr/offres/recherche/detail/{offer.get('id', '')}",
                     'date_scraped': date.today().isoformat(),

@@ -1,8 +1,8 @@
-name: Weekly Data Pipeline
+name: Daily Data Pipeline
 
 on:
   schedule:
-    - cron: '0 6 * * 1'  # Chaque lundi a 6h UTC
+    - cron: '0 6 * * *'  # Chaque jour a 6h UTC
   workflow_dispatch:  # Lancement manuel
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
       - name: Run dbt
         working-directory: dbt_project
         run: |
-          dbt deps
-          dbt seed
-          dbt run
-          dbt test
+          dbt deps --profiles-dir .
+          dbt seed --profiles-dir .
+          dbt run --profiles-dir .
+          dbt test --profiles-dir .

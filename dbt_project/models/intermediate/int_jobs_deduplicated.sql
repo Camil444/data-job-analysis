@@ -46,6 +46,7 @@ select
     date_posted,
     date_scraped,
     job_url,
+    company_sector,
     dedup_key
 from ranked
 where rn = 1

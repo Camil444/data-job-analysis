@@ -63,6 +63,7 @@ def extract() -> pd.DataFrame:
         'date_posted': raw_df.get('date_posted', pd.Series(dtype=str)),
         'date_scraped': date.today().isoformat(),
         'job_url': raw_df.get('job_url', pd.Series(dtype=str)),
+        'company_sector': raw_df.get('company_industry', pd.Series(dtype=str)),
     })
 
     logger.info(f"[JobSpy] {len(df)} offres mappees au schema commun.")

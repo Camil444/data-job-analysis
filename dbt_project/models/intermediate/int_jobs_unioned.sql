@@ -20,7 +20,7 @@ unioned as (
     select row_id, source, raw_title, company_name, location_city, raw_description,
            contract_type, experience_level, education_level,
            salary_min, salary_max, salary_period, remote_policy,
-           date_posted, date_scraped, job_url
+           date_posted, date_scraped, job_url, company_sector
     from france_travail
 
     union all
@@ -28,7 +28,7 @@ unioned as (
     select row_id, source, raw_title, company_name, location_city, raw_description,
            contract_type, experience_level, education_level,
            salary_min, salary_max, salary_period, remote_policy,
-           date_posted, date_scraped, job_url
+           date_posted, date_scraped, job_url, company_sector
     from linkedin
 
     union all
@@ -36,7 +36,7 @@ unioned as (
     select row_id, source, raw_title, company_name, location_city, raw_description,
            contract_type, experience_level, education_level,
            salary_min, salary_max, salary_period, remote_policy,
-           date_posted, date_scraped, job_url
+           date_posted, date_scraped, job_url, company_sector
     from indeed
 
     union all
@@ -44,7 +44,7 @@ unioned as (
     select row_id, source, raw_title, company_name, location_city, raw_description,
            contract_type, experience_level, education_level,
            salary_min, salary_max, salary_period, remote_policy,
-           date_posted, date_scraped, job_url
+           date_posted, date_scraped, job_url, company_sector
     from glassdoor
 )
 

@@ -50,6 +50,7 @@ select
     date_posted,
     date_scraped,
     job_url,
+    company_sector,
     dedup_key
 from best_match
 where rn = 1

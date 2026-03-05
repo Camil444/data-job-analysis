@@ -22,6 +22,7 @@ cleaned as (
         date_posted::date as date_posted,
         date_scraped::date as date_scraped,
         job_url,
+        trim(lower(company_sector)) as company_sector,
         loaded_at,
         row_number() over (
             partition by raw_title, company_name, date_posted
