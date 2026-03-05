@@ -22,12 +22,13 @@ matched as (
 
 -- Garder le keyword le plus long (le plus specifique) pour chaque job
 best_match as (
-    select *
+    select
+        *,
+        row_number() over (
+            partition by row_id
+            order by keyword_length desc nulls last
+        ) as rn
     from matched
-    qualify row_number() over (
-        partition by row_id
-        order by keyword_length desc nulls last
-    ) = 1
 )
 
 select
@@ -51,3 +52,4 @@ select
     job_url,
     dedup_key
 from best_match
+where rn = 1

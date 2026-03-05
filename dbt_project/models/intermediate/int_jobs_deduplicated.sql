@@ -19,13 +19,14 @@ with_dedup_key as (
     from unioned
 ),
 
-deduplicated as (
-    select *
+ranked as (
+    select
+        *,
+        row_number() over (
+            partition by dedup_key
+            order by source_priority asc, date_scraped desc
+        ) as rn
     from with_dedup_key
-    qualify row_number() over (
-        partition by dedup_key
-        order by source_priority asc, date_scraped desc
-    ) = 1
 )
 
 select
@@ -46,4 +47,5 @@ select
     date_scraped,
     job_url,
     dedup_key
-from deduplicated
+from ranked
+where rn = 1

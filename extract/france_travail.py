@@ -12,7 +12,7 @@ from extract.config import FT_CLIENT_ID, FT_CLIENT_SECRET, DATA_KEYWORDS
 logger = logging.getLogger(__name__)
 
 AUTH_URL = "https://entreprise.francetravail.fr/connexion/oauth2/access_token?realm=/partenaire"
-OFFERS_URL = "https://api.francetravail.io/partenaire/offresdemploi/v2/offres"
+OFFERS_URL = "https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search"
 PAGE_SIZE = 150
 
 
@@ -35,27 +35,30 @@ def _authenticate() -> str:
 
 
 def _parse_salary(salary_text: str):
-    """Parse le champ salaire texte pour extraire min et max."""
+    """Parse le champ salaire texte pour extraire min et max.
+
+    Format typique : 'Annuel de 40000.0 Euros à 50000.0 Euros sur 12.0 mois'
+    """
     if not salary_text:
         return None, None, None
 
-    # Chercher des nombres dans le texte
-    numbers = re.findall(r'[\d]+(?:[.,]\d+)?', salary_text.replace(' ', ''))
-    numbers = [float(n.replace(',', '.')) for n in numbers]
-
     period = None
     text_lower = salary_text.lower()
-    if 'annuel' in text_lower or 'an' in text_lower:
+    if 'annuel' in text_lower:
         period = 'yearly'
-    elif 'mensuel' in text_lower or 'mois' in text_lower:
+    elif 'mensuel' in text_lower:
         period = 'monthly'
-    elif 'heure' in text_lower or 'horaire' in text_lower:
+    elif 'horaire' in text_lower or 'heure' in text_lower:
         period = 'hourly'
 
-    if len(numbers) >= 2:
-        return numbers[0], numbers[1], period
-    elif len(numbers) == 1:
-        return numbers[0], numbers[0], period
+    # Extraire les montants en euros (avant "Euros" ou "€")
+    amounts = re.findall(r'([\d]+(?:[.,]\d+)?)\s*(?:euros|€)', text_lower)
+    amounts = [float(a.replace(',', '.')) for a in amounts]
+
+    if len(amounts) >= 2:
+        return amounts[0], amounts[1], period
+    elif len(amounts) == 1:
+        return amounts[0], amounts[0], period
     return None, None, period
 
 
@@ -103,10 +106,15 @@ def _fetch_offers_for_keyword(keyword: str, token: str) -> list:
             break
 
         all_offers.extend(results)
+
+        # Status 200 = derniere page, 206 = encore des pages
+        if resp.status_code == 200:
+            break
+
         start += PAGE_SIZE
 
-        # Verifier s'il y a encore des resultats
-        content_range = data.get('Content-Range') or resp.headers.get('Content-Range', '')
+        # Verifier via Content-Range header
+        content_range = resp.headers.get('Content-Range', '')
         if content_range:
             # Format: "offres 0-149/342"
             match = re.search(r'/(\d+)', content_range)
