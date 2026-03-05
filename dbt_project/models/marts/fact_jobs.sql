@@ -23,6 +23,11 @@ sector_map as (
     from {{ ref('seed_sector_mapping') }}
 ),
 
+company_sector_map as (
+    select lower(company_pattern) as company_pattern, sector
+    from {{ ref('seed_company_sector') }}
+),
+
 -- Etape 1 : extraire le code departement depuis location_city (formats varies)
 with_dept_code as (
     select
@@ -100,11 +105,11 @@ with_location as (
     ) d_region on c.parsed_dept_code is null and d_city.department_code is null
 ),
 
--- Etape 4 : normaliser le secteur
+-- Etape 4 : normaliser le secteur (raw_sector_map puis fallback par nom d'entreprise)
 with_sector as (
     select
         l.*,
-        sm.normalized_sector
+        coalesce(sm.normalized_sector, csm.sector) as normalized_sector
     from with_location l
     left join lateral (
         select s.normalized_sector
@@ -112,6 +117,12 @@ with_sector as (
         where lower(coalesce(l.company_sector, '')) like '%' || s.raw_pattern || '%'
         limit 1
     ) sm on true
+    left join lateral (
+        select cs.sector
+        from company_sector_map cs
+        where lower(coalesce(l.company_name, '')) like '%' || cs.company_pattern || '%'
+        limit 1
+    ) csm on sm.normalized_sector is null
 ),
 
 -- Description en lowercase pour parsing experience/education
