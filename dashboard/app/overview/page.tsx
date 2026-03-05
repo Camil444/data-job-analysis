@@ -205,7 +205,7 @@ export default function OverviewPage() {
             headerRight={
               <div className="flex rounded-lg overflow-hidden" style={{ border: "1px solid var(--border)" }}>
                 <button
-                  className="px-2.5 py-1 text-xs font-medium cursor-pointer"
+                  className={`px-2.5 py-1 text-xs font-medium cursor-pointer toggle-btn ${locationMode === "department" ? "toggle-btn-active" : ""}`}
                   style={{
                     backgroundColor: locationMode === "department" ? accentColor : "var(--toggle-inactive-bg)",
                     color: locationMode === "department" ? "#fff" : "var(--text-muted)",
@@ -215,7 +215,7 @@ export default function OverviewPage() {
                   Dept
                 </button>
                 <button
-                  className="px-2.5 py-1 text-xs font-medium cursor-pointer"
+                  className={`px-2.5 py-1 text-xs font-medium cursor-pointer toggle-btn ${locationMode === "city" ? "toggle-btn-active" : ""}`}
                   style={{
                     backgroundColor: locationMode === "city" ? accentColor : "var(--toggle-inactive-bg)",
                     color: locationMode === "city" ? "#fff" : "var(--text-muted)",
@@ -260,7 +260,7 @@ export default function OverviewPage() {
           headerRight={
             <div className="flex rounded-lg overflow-hidden" style={{ border: "1px solid var(--border)" }}>
               <button
-                className="px-2.5 py-1 text-xs font-medium cursor-pointer"
+                className={`px-2.5 py-1 text-xs font-medium cursor-pointer toggle-btn ${sectorMode === "sector" ? "toggle-btn-active" : ""}`}
                 style={{
                   backgroundColor: sectorMode === "sector" ? accentColor : "var(--toggle-inactive-bg)",
                   color: sectorMode === "sector" ? "#fff" : "var(--text-muted)",
@@ -270,7 +270,7 @@ export default function OverviewPage() {
                 Secteur
               </button>
               <button
-                className="px-2.5 py-1 text-xs font-medium cursor-pointer"
+                className={`px-2.5 py-1 text-xs font-medium cursor-pointer toggle-btn ${sectorMode === "company" ? "toggle-btn-active" : ""}`}
                 style={{
                   backgroundColor: sectorMode === "company" ? accentColor : "var(--toggle-inactive-bg)",
                   color: sectorMode === "company" ? "#fff" : "var(--text-muted)",

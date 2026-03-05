@@ -120,6 +120,18 @@ body {
   background: var(--scrollbar-hover);
 }
 
+/* Filter/toggle button hover */
+.filter-btn:not(.filter-btn-active):hover {
+  background-color: var(--hover-overlay) !important;
+  border-color: var(--text-muted-light) !important;
+  color: var(--text) !important;
+}
+
+.toggle-btn:not(.toggle-btn-active):hover {
+  background-color: var(--hover-overlay) !important;
+  color: var(--text) !important;
+}
+
 /* Recharts overrides */
 .recharts-default-tooltip {
   background-color: var(--card-bg) !important;

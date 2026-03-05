@@ -49,7 +49,7 @@ function ToggleGroup({
           <button
             key={opt.value}
             onClick={() => toggle(opt.value)}
-            className="px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer filter-btn ${active ? "filter-btn-active" : ""}`}
             style={{
               backgroundColor: active ? "var(--accent)" : "var(--filter-inactive-bg)",
               color: active ? "#fff" : "var(--text-muted)",
@@ -175,7 +175,7 @@ export default function GlobalFilters({ lockedTitles, hideMetier }: { lockedTitl
       {hasFilters && (
         <button
           onClick={resetFilters}
-          className="ml-auto px-4 py-2 rounded-lg text-sm font-medium cursor-pointer"
+          className="order-first px-4 py-2 rounded-lg text-sm font-medium cursor-pointer hover:opacity-80 transition-opacity"
           style={{ backgroundColor: "#EF4444", color: "#fff" }}
         >
           Reinitialiser

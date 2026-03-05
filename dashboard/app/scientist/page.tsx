@@ -101,7 +101,7 @@ export default function ScientistPage() {
           <button
             key={opt.value}
             onClick={() => setMetierFilter(opt.value)}
-            className="px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer filter-btn ${metierFilter === opt.value ? "filter-btn-active" : ""}`}
             style={{
               backgroundColor: metierFilter === opt.value ? accentColor : "var(--filter-inactive-bg)",
               color: metierFilter === opt.value ? "#fff" : "var(--text-muted)",

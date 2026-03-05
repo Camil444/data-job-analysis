@@ -37,6 +37,7 @@ export default function Sidebar() {
   const { theme, toggle } = useTheme();
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const [ghHovered, setGhHovered] = useState(false);
+  const [themeHovered, setThemeHovered] = useState(false);
 
   useEffect(() => {
     fetch("/api/overview?meta=last_update")
@@ -63,8 +64,10 @@ export default function Sidebar() {
         </div>
         <button
           onClick={toggle}
+          onMouseEnter={() => setThemeHovered(true)}
+          onMouseLeave={() => setThemeHovered(false)}
           className="w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-colors"
-          style={{ backgroundColor: "var(--icon-bg)" }}
+          style={{ backgroundColor: themeHovered ? "var(--active-bg)" : "var(--icon-bg)", transform: themeHovered ? "scale(1.1)" : "scale(1)", transition: "all 0.15s ease" }}
           title={theme === "light" ? "Dark mode" : "Light mode"}
         >
           {theme === "light" ? (

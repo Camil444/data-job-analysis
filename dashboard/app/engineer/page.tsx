@@ -75,7 +75,7 @@ export default function EngineerPage() {
             <button
               key={opt.value}
               onClick={() => setMetierFilter(opt.value)}
-              className="px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+              className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer filter-btn ${metierFilter === opt.value ? "filter-btn-active" : ""}`}
               style={{
                 backgroundColor: metierFilter === opt.value ? accentColor : "var(--filter-inactive-bg)",
                 color: metierFilter === opt.value ? "#fff" : "var(--text-muted)",
@@ -93,7 +93,7 @@ export default function EngineerPage() {
               <button
                 key={opt.value}
                 onClick={() => setCloudFilter(opt.value)}
-                className="px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer filter-btn ${cloudFilter === opt.value ? "filter-btn-active" : ""}`}
                 style={{
                   backgroundColor: cloudFilter === opt.value ? (CLOUD_COLORS[opt.value] || accentColor) : "var(--filter-inactive-bg)",
                   color: cloudFilter === opt.value ? "#fff" : "var(--text-muted)",
