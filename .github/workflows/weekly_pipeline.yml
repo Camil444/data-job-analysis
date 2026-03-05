@@ -21,7 +21,6 @@ jobs:
 
       - name: Run extraction
         env:
-          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
           FT_CLIENT_ID: ${{ secrets.FT_CLIENT_ID }}
           FT_CLIENT_SECRET: ${{ secrets.FT_CLIENT_SECRET }}
           NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
