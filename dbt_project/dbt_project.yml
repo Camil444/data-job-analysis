@@ -1,0 +1,20 @@
+name: 'data_job_analysis'
+version: '1.0.0'
+config-version: 2
+
+profile: 'data_job_analysis'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+seeds:
+  data_job_analysis:
+    +schema: analytics

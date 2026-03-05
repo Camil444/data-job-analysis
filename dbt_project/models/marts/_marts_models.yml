@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: fact_jobs
+    description: "Table de faits : 1 ligne = 1 offre d'emploi dedupliquee et enrichie"
+    columns:
+      - name: job_id
+        description: "Cle surrogate unique de l'offre"
+        tests:
+          - unique
+          - not_null
+      - name: source
+        description: "Source de l'offre (france_travail, linkedin, indeed, glassdoor)"
+        tests:
+          - not_null
+      - name: remote_policy
+        description: "Politique de teletravail normalisee"
+        tests:
+          - accepted_values:
+              values: ['on_site', 'hybrid', 'full_remote', 'not_specified']
+      - name: contract_type
+        description: "Type de contrat normalise"
+        tests:
+          - accepted_values:
+              values: ['cdi', 'cdd', 'alternance', 'stage', 'freelance', 'interim', 'not_specified']
+      - name: normalized_title_id
+        description: "FK vers dim_job_titles (null si titre non matche)"
+        tests:
+          - relationships:
+              to: ref('dim_job_titles')
+              field: title_id
+              config:
+                where: "normalized_title_id is not null"
+
+  - name: dim_job_titles
+    description: "Dimension : 10 titres de postes normalises"
+    columns:
+      - name: title_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_skills
+    description: "Dimension : 77 competences techniques en 9 categories"
+    columns:
+      - name: skill_id
+        tests:
+          - unique
+          - not_null
+
+  - name: bridge_job_skills
+    description: "Bridge table N:N entre jobs et skills detectes dans les descriptions"
+    columns:
+      - name: job_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('fact_jobs')
+              field: job_id
+      - name: skill_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_skills')
+              field: skill_id

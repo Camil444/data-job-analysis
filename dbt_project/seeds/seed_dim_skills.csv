@@ -1,0 +1,78 @@
+skill_id,skill_name,skill_category
+1,Python,langages
+2,SQL,langages
+3,R,langages
+4,Java,langages
+5,Scala,langages
+6,JavaScript,langages
+7,SAS,langages
+8,Julia,langages
+9,Bash/Shell,langages
+10,Power BI,data_viz_bi
+11,Tableau,data_viz_bi
+12,Looker,data_viz_bi
+13,Looker Studio,data_viz_bi
+14,Metabase,data_viz_bi
+15,Qlik,data_viz_bi
+16,Superset,data_viz_bi
+17,Excel,data_viz_bi
+18,AWS,cloud
+19,GCP,cloud
+20,Azure,cloud
+21,Snowflake,cloud
+22,Databricks,cloud
+23,OVH,cloud
+24,dbt,data_engineering
+25,Airflow,data_engineering
+26,Dagster,data_engineering
+27,Prefect,data_engineering
+28,Luigi,data_engineering
+29,Fivetran,data_engineering
+30,Airbyte,data_engineering
+31,Talend,data_engineering
+32,Informatica,data_engineering
+33,SSIS,data_engineering
+34,PostgreSQL,databases
+35,MySQL,databases
+36,MongoDB,databases
+37,BigQuery,databases
+38,Redshift,databases
+39,Elasticsearch,databases
+40,Redis,databases
+41,Cassandra,databases
+42,SQL Server,databases
+43,Scikit-learn,ml_ai
+44,TensorFlow,ml_ai
+45,PyTorch,ml_ai
+46,Keras,ml_ai
+47,MLflow,ml_ai
+48,Hugging Face,ml_ai
+49,LangChain,ml_ai
+50,OpenAI API,ml_ai
+51,XGBoost,ml_ai
+52,LightGBM,ml_ai
+53,spaCy,ml_ai
+54,NLTK,ml_ai
+55,Spark,big_data
+56,Hadoop,big_data
+57,Kafka,big_data
+58,Pandas,big_data
+59,Polars,big_data
+60,NumPy,big_data
+61,Dask,big_data
+62,Flink,big_data
+63,Docker,devops
+64,Kubernetes,devops
+65,Terraform,devops
+66,Git,devops
+67,CI/CD,devops
+68,GitHub Actions,devops
+69,Linux,devops
+70,Agile/Scrum,methodologies
+71,Data Governance,methodologies
+72,RGPD/GDPR,methodologies
+73,Data Quality,methodologies
+74,Storytelling,methodologies
+75,Jira,methodologies
+76,Confluence,methodologies
+77,Notion,methodologies

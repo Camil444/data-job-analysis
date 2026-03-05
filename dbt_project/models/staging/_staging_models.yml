@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: stg_france_travail
+      - name: stg_linkedin
+      - name: stg_indeed
+      - name: stg_glassdoor
+
+models:
+  - name: stg_france_travail
+    description: "Offres nettoyees depuis l'API France Travail"
+    columns:
+      - name: row_id
+        description: "Cle surrogate unique"
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_linkedin
+    description: "Offres nettoyees depuis LinkedIn (via Apify)"
+    columns:
+      - name: row_id
+        description: "Cle surrogate unique"
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_indeed
+    description: "Offres nettoyees depuis Indeed (via JobSpy)"
+    columns:
+      - name: row_id
+        description: "Cle surrogate unique"
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_glassdoor
+    description: "Offres nettoyees depuis Glassdoor (via JobSpy)"
+    columns:
+      - name: row_id
+        description: "Cle surrogate unique"
+        tests:
+          - unique
+          - not_null

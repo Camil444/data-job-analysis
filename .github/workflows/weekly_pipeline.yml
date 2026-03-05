@@ -1,0 +1,51 @@
+name: Weekly Data Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Chaque lundi a 6h UTC
+  workflow_dispatch:  # Lancement manuel
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run extraction
+        env:
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+          FT_CLIENT_ID: ${{ secrets.FT_CLIENT_ID }}
+          FT_CLIENT_SECRET: ${{ secrets.FT_CLIENT_SECRET }}
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: python extract/run_all.py
+
+      - name: Parse Neon URL for dbt
+        env:
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: |
+          python -c "
+          from urllib.parse import urlparse
+          import os
+          parsed = urlparse(os.environ['NEON_DATABASE_URL'])
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              f.write(f'NEON_HOST={parsed.hostname}\n')
+              f.write(f'NEON_USER={parsed.username}\n')
+              f.write(f'NEON_PASSWORD={parsed.password}\n')
+              f.write(f'NEON_DBNAME={parsed.path.lstrip(\"/\")}\n')
+          "
+
+      - name: Run dbt
+        working-directory: dbt_project
+        run: |
+          dbt deps
+          dbt seed
+          dbt run
+          dbt test
