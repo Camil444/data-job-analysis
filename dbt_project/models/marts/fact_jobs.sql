@@ -142,7 +142,7 @@ final as (
         raw_title,
         normalized_title_id,
         company_name,
-        normalized_sector as company_sector,
+        coalesce(normalized_sector, 'Non renseigné') as company_sector,
         city_name as location_city,
         dept_name as location_department,
         dept_code::int as location_department_code,
@@ -306,4 +306,6 @@ final as (
     from desc_lower
 )
 
+-- Exclure les offres non-data (titres non matches par les keywords data)
 select * from final
+where normalized_title_id is not null
