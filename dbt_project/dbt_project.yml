@@ -15,6 +15,15 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
+models:
+  data_job_analysis:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+
 seeds:
   data_job_analysis:
     +schema: analytics

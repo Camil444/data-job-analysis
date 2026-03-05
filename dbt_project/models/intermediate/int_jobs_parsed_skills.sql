@@ -54,6 +54,10 @@ skill_matches as (
             when s.skill_name = 'Julia' then (
                 lower(j.raw_description) ~ '(?:^|[\s,;/(])julia(?:[\s,;/)]|$)|julialang|langage julia'
             )
+            -- Looker Studio : matcher aussi "looker" seul
+            when s.skill_name = 'Looker Studio' then (
+                lower(j.raw_description) like '%looker%'
+            )
             -- Cas general : match simple insensible a la casse
             else lower(j.raw_description) like '%' || lower(s.skill_name) || '%'
         end

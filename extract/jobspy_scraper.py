@@ -23,7 +23,7 @@ def extract() -> pd.DataFrame:
                 site_name=["indeed", "glassdoor", "linkedin"],
                 search_term=keyword,
                 location="France",
-                results_wanted=100,
+                results_wanted=2000,
                 hours_old=168,  # 7 jours
                 country_indeed="France",
                 linkedin_fetch_description=True,

@@ -18,6 +18,16 @@ models:
         tests:
           - accepted_values:
               values: ['on_site', 'hybrid', 'full_remote', 'not_specified']
+      - name: experience_level
+        description: "Niveau de seniorite (junior, mid, senior, lead)"
+        tests:
+          - accepted_values:
+              values: ['junior', 'mid', 'senior', 'lead', 'not_specified']
+      - name: experience_years
+        description: "Tranche d'annees d'experience (0_2, 2_5, 5_10, 10_plus)"
+        tests:
+          - accepted_values:
+              values: ['0_2', '2_5', '5_10', '10_plus', 'not_specified']
       - name: contract_type
         description: "Type de contrat normalise"
         tests:
@@ -41,7 +51,7 @@ models:
           - not_null
 
   - name: dim_skills
-    description: "Dimension : 77 competences techniques en 9 categories"
+    description: "Dimension : 76 competences techniques en 9 categories"
     columns:
       - name: skill_id
         tests:

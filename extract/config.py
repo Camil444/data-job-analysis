@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 # --- Credentials ---
-APIFY_API_TOKEN = os.getenv('APIFY_API_TOKEN')
 FT_CLIENT_ID = os.getenv('FT_CLIENT_ID')
 FT_CLIENT_SECRET = os.getenv('FT_CLIENT_SECRET')
 NEON_DATABASE_URL = os.getenv('NEON_DATABASE_URL')

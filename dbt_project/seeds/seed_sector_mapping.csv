@@ -1,0 +1,139 @@
+raw_pattern,normalized_sector
+insurance,Assurance
+assurance,Assurance
+bancaire,Banque
+banking,Banque
+bank,Banque
+financial,Finance
+finance,Finance
+fintech,Finance
+investment,Finance
+capital,Finance
+santé,Santé
+health,Santé
+pharma,Santé
+médical,Santé
+medical,Santé
+hospital,Santé
+biotech,Santé
+consulting,Conseil
+conseil,Conseil
+consult,Conseil
+advisory,Conseil
+audit,Conseil
+accounting,Conseil
+cabinet,Conseil
+accenture,Conseil
+capgemini,Conseil
+deloitte,Conseil
+kpmg,Conseil
+pwc,Conseil
+mckinsey,Conseil
+sopra,Conseil
+atos,Conseil
+logiciel,Technologie
+software,Technologie
+saas,Technologie
+tech,Technologie
+informatique,Technologie
+information technology,Technologie
+internet,Technologie
+platform,Technologie
+digital,Technologie
+numérique,Technologie
+computer,Technologie
+semiconductor,Technologie
+telecom,Télécommunications
+télécommunications,Télécommunications
+telecommunications,Télécommunications
+mobile,Télécommunications
+énergie,Énergie
+energy,Énergie
+oil,Énergie
+gas,Énergie
+renewable,Énergie
+nucléaire,Énergie
+nuclear,Énergie
+electricity,Énergie
+pétrole,Énergie
+industrie,Industrie
+manufacturing,Industrie
+industrial,Industrie
+automotive,Industrie
+automobile,Industrie
+aéronautique,Industrie
+aerospace,Industrie
+défense,Industrie
+defense,Industrie
+construction,Industrie
+btp,Industrie
+commerce,Commerce
+retail,Commerce
+e-commerce,Commerce
+ecommerce,Commerce
+distribution,Commerce
+grande distribution,Commerce
+vente,Commerce
+luxury,Commerce
+luxe,Commerce
+cosmétique,Commerce
+transport,Transport
+logistics,Transport
+logistique,Transport
+supply chain,Transport
+freight,Transport
+shipping,Transport
+immobilier,Immobilier
+real estate,Immobilier
+property,Immobilier
+média,Médias
+media,Médias
+presse,Médias
+publishing,Médias
+broadcast,Médias
+entertainment,Médias
+jeux,Médias
+gaming,Médias
+éducation,Éducation
+education,Éducation
+université,Éducation
+university,Éducation
+research,Éducation
+recherche,Éducation
+formation,Éducation
+training,Éducation
+école,Éducation
+public,Administration publique
+government,Administration publique
+administration,Administration publique
+état,Administration publique
+territorial,Administration publique
+collectivité,Administration publique
+ministère,Administration publique
+agroalimentaire,Agroalimentaire
+food,Agroalimentaire
+agri,Agroalimentaire
+boisson,Agroalimentaire
+beverage,Agroalimentaire
+hôtel,Tourisme
+hotel,Tourisme
+tourisme,Tourisme
+travel,Tourisme
+restauration,Tourisme
+hospitality,Tourisme
+environnement,Environnement
+environment,Environnement
+eau,Environnement
+water,Environnement
+déchet,Environnement
+waste,Environnement
+rh,Ressources humaines
+staffing,Ressources humaines
+human resources,Ressources humaines
+recrutement,Ressources humaines
+recruitment,Ressources humaines
+intérim,Ressources humaines
+juridique,Juridique
+legal,Juridique
+law,Juridique
+avocat,Juridique

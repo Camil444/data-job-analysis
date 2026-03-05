@@ -121,8 +121,8 @@ def _fetch_offers_for_keyword(keyword: str, token: str) -> list:
             if match and start >= int(match.group(1)):
                 break
 
-        # Securite : pas plus de 1000 offres par keyword
-        if start >= 1000:
+        # Securite : cap a 10000 par keyword
+        if start >= 10000:
             break
 
     return all_offers

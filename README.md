@@ -2,7 +2,7 @@
 
 **Analyse du marche de l'emploi data en France**
 
-Pipeline de donnees complet qui collecte, transforme et analyse les offres d'emploi du secteur data en France. Le projet scrape automatiquement 3 sources chaque semaine, normalise les donnees via dbt et les prepare pour un dashboard Power BI.
+Pipeline de donnees complet qui collecte, transforme et analyse les offres d'emploi du secteur data en France. Le projet scrape automatiquement 3 sources chaque jour, normalise les donnees via dbt et les expose dans un dashboard Next.js interactif.
 
 ![GitHub Actions](https://github.com/Camil444/data-job-analysis/actions/workflows/weekly_pipeline.yml/badge.svg)
 
@@ -12,11 +12,11 @@ Pipeline de donnees complet qui collecte, transforme et analyse les offres d'emp
 
 ```
 Sources                    Extract (Python)         Load (Neon)            Transform (dbt)           Viz
-+-----------------+       +----------------+       +-------------+       +------------------+       +-----------+
-| France Travail  |------>|                |       |             |       |                  |       |           |
-| LinkedIn (Apify)|------>| extract/*.py   |------>| raw.stg_*   |------>| staging          |       | Power BI  |
-| Indeed+Glassdoor|------>|                |       |             |       | intermediate     |------>|           |
-+-----------------+       +----------------+       +-------------+       | marts (star)     |       +-----------+
++-----------------+       +----------------+       +-------------+       +------------------+       +------------+
+| France Travail  |------>|                |       |             |       |                  |       |            |
+| LinkedIn(JobSpy)|------>| extract/*.py   |------>| raw.stg_*   |------>| staging          |       | Next.js    |
+| Indeed  (JobSpy)|------>|                |       |             |       | intermediate     |------>| Dashboard  |
++-----------------+       +----------------+       +-------------+       | marts (star)     |       +------------+
                                                                          +------------------+
 ```
 
@@ -27,16 +27,16 @@ Sources                    Extract (Python)         Load (Neon)            Trans
 | Extraction      | Python 3.11+, Requests, python-jobspy |
 | Transformation  | dbt-core + dbt-postgres              |
 | Base de donnees | Neon PostgreSQL (serverless)          |
-| Orchestration   | GitHub Actions (cron hebdomadaire)    |
-| Visualisation   | Power BI                             |
+| Orchestration   | GitHub Actions (cron quotidien)      |
+| Visualisation   | Next.js, Recharts                    |
 
 ## Sources de donnees
 
-| Source         | Acces               | Volume estime      | Mots-cles       |
-|----------------|---------------------|--------------------|-----------------|
-| France Travail | API officielle OAuth2 | ~500-2000/semaine | 10 keywords data |
-| LinkedIn       | Apify (scraper)      | ~100-500/semaine  | 1 keyword "data" |
-| Indeed + Glassdoor | python-jobspy    | ~200-1000/semaine | 10 keywords data |
+| Source         | Acces                | Volume estime     | Mots-cles       |
+|----------------|----------------------|-------------------|-----------------|
+| France Travail | API officielle OAuth2 | ~500/semaine      | 10 keywords data |
+| LinkedIn       | python-jobspy        | ~300-500/keyword  | 10 keywords data |
+| Indeed         | python-jobspy        | ~20-50/keyword    | 10 keywords data |
 
 ## Schema de donnees (Star Schema)
 
@@ -48,37 +48,68 @@ Sources                    Extract (Python)         Load (Neon)            Trans
                              |
 +------------------+         |         +------------------+
 |   dim_skills     |---------+---------+    fact_jobs     |
-|  (77 skills)     |  bridge_job_skills |  (offres uniques)|
+|  (76 skills)     |  bridge_job_skills |  (offres uniques)|
 +------------------+                   +------------------+
 ```
 
-- **fact_jobs** : 1 ligne = 1 offre dedupliquee (source, titre, entreprise, lieu, salaire, remote, contrat, experience...)
-- **dim_job_titles** : 10 titres normalises (Data Analyst, Data Engineer, Data Scientist...)
-- **dim_skills** : 77 competences en 9 categories (langages, cloud, ML/AI, devops...)
-- **bridge_job_skills** : relation N:N entre offres et competences detectees
+### fact_jobs (table de faits)
+
+| Colonne | Description |
+|---------|-------------|
+| `job_id` | Cle surrogate (hash MD5) |
+| `source` | france_travail, linkedin, indeed, glassdoor |
+| `raw_title` | Titre brut de l'offre |
+| `normalized_title_id` | FK vers dim_job_titles |
+| `company_name` | Nom de l'entreprise |
+| `company_sector` | Secteur normalise (17 categories) |
+| `location_city` | Ville |
+| `location_department` | Departement |
+| `location_department_code` | Code departement (int) |
+| `location_region` | Region |
+| `remote_policy` | full_remote, hybrid, on_site, not_specified |
+| `contract_type` | cdi, cdd, alternance, stage, freelance, interim |
+| `experience_level` | junior, mid, senior, lead, not_specified |
+| `experience_years` | 0_2, 2_5, 5_10, 10_plus, not_specified |
+| `education_level` | bac_3, bac_5, bac_8, not_specified |
+| `salary` | Salaire annuel brut (normalise) |
+| `date_posted` | Date de publication |
+| `job_url` | URL de l'offre |
+
+### Dimensions
+
+- **dim_job_titles** : 10 titres normalises repartis en familles (analysis, engineering, ai_ml, management)
+- **dim_skills** : 76 competences techniques en 9 categories (langages, cloud, ML/AI, devops, databases, data_viz_bi, big_data, data_engineering, methodologies)
+- **bridge_job_skills** : Relation N:N entre offres et competences detectees par parsing des descriptions
+
+## Dashboard
+
+Dashboard Next.js avec 5 pages :
+
+- **Vue Globale** : treemap metiers, top skills, repartition contrats/regions/remote/sources, salaires par metier
+- **Data Analyst** : focus skills, outils BI/viz, salaire vs experience, heatmap skills x experience
+- **Data Engineer** : cloud wars (AWS/GCP/Azure), orchestrateurs, skills x cloud provider
+- **DS / ML / AI** : frameworks ML, GenAI vs ML classique, sous-profils DS/ML/AI
+- **Salaires** : distribution par metier, salaire vs nb skills, impact education/experience/remote
+
+Filtres globaux : metier, contrat, remote, experience, source, region.
 
 ## Prerequis
 
 - Python 3.11+
 - Compte [Neon](https://neon.tech/) (PostgreSQL serverless)
-- Token API [Apify](https://apify.com/) (scraper LinkedIn)
 - Identifiants API [France Travail](https://francetravail.io/) (OAuth2)
 
 ## Installation
 
 ```bash
-# Cloner le repo
 git clone https://github.com/Camil444/data-job-analysis.git
 cd data-job-analysis
 
-# Creer un environnement virtuel
 python -m venv venv
-source venv/bin/activate  # macOS/Linux
+source venv/bin/activate
 
-# Installer les dependances
 pip install -r requirements.txt
 
-# Configurer les variables d'environnement
 cp .env.example .env
 # Remplir les valeurs dans .env
 ```
@@ -86,7 +117,6 @@ cp .env.example .env
 ### Template `.env`
 
 ```
-APIFY_API_TOKEN=votre_token_apify
 FT_CLIENT_ID=votre_client_id_france_travail
 FT_CLIENT_SECRET=votre_client_secret_france_travail
 NEON_DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
@@ -102,16 +132,25 @@ python extract/run_all.py
 
 # 2. Transformations dbt
 cd dbt_project
-dbt deps        # installer les packages
-dbt seed        # charger les referentiels
-dbt run         # lancer les transformations
-dbt test        # valider les donnees
+dbt deps
+dbt seed
+dbt run
+dbt test
 ```
 
 ### Lancement automatique
 
-Le pipeline s'execute automatiquement chaque lundi a 6h UTC via GitHub Actions.
+Le pipeline s'execute automatiquement chaque jour a 6h UTC via GitHub Actions.
 Il est aussi possible de le lancer manuellement depuis l'onglet Actions du repo.
+
+### Dashboard
+
+```bash
+cd dashboard
+npm install
+npm run dev
+# Ouvrir http://localhost:3000
+```
 
 ## Structure du projet
 
@@ -120,42 +159,43 @@ data-job-analysis/
 |-- .env                          # Variables d'environnement (non versionne)
 |-- .gitignore
 |-- requirements.txt
-|-- CLAUDE.md                     # Memoire projet pour Claude Code
 |-- README.md
 |
 |-- extract/
+|   |-- __init__.py               # Package Python
 |   |-- config.py                 # Configuration centrale + parsing NEON_DATABASE_URL
 |   |-- run_all.py                # Orchestrateur d'extraction
-|   |-- france_travail.py         # Extracteur API France Travail
-|   |-- apify_linkedin.py         # Extracteur API Apify (LinkedIn)
-|   |-- jobspy_scraper.py         # Extracteur python-jobspy (Indeed + Glassdoor)
-|   |-- load_to_db.py             # Chargement dans les tables staging Neon
+|   |-- france_travail.py         # Extracteur API France Travail (OAuth2)
+|   |-- jobspy_scraper.py         # Extracteur python-jobspy (LinkedIn + Indeed)
+|   |-- load_to_db.py             # Chargement dans les tables staging Neon (avec dedup)
 |
 |-- dbt_project/
 |   |-- dbt_project.yml
 |   |-- profiles.yml              # Connexion Neon via env vars
 |   |-- packages.yml              # dbt-utils
-|   |-- seeds/                    # Referentiels (skills, titres, keywords)
+|   |-- seeds/                    # Referentiels (skills, titres, departements, secteurs)
 |   |-- models/
-|   |   |-- staging/              # Nettoyage des donnees brutes
-|   |   |-- intermediate/         # Union, dedup, normalisation, parsing skills
+|   |   |-- staging/              # Nettoyage des donnees brutes (1 view/source)
+|   |   |-- intermediate/         # Union, dedup, normalisation titres, parsing skills
 |   |   |-- marts/                # Star schema (fact_jobs, dim_*, bridge_*)
 |   |   |-- exports/              # Vues d'export (titres non matches)
 |   |-- tests/                    # Tests custom
 |
+|-- dashboard/                    # Next.js app (gitignore)
+|   |-- app/                      # Pages et API routes
+|   |-- components/               # Composants React reutilisables
+|   |-- lib/                      # DB connection, filtres, couleurs
+|
+|-- docs/
+|   |-- dbt_transformations.md    # Documentation detaillee des transformations dbt
+|
 |-- .github/workflows/
-    |-- weekly_pipeline.yml       # GitHub Actions cron hebdomadaire
+    |-- weekly_pipeline.yml       # GitHub Actions cron quotidien
 ```
 
-## Ameliorations futures
+## Documentation
 
-- Dashboard Streamlit ou Next.js en complement de Power BI
-- NLP avance pour le parsing des skills (spaCy / transformers)
-- Ajout de sources : Welcome to the Jungle, WTTJ, Talent.io
-- Historique des tendances (evolution des skills demandes par mois)
-- Geocodage des villes pour une carte interactive
-- Enrichissement automatique des titres non matches via LLM
-- Alertes email sur les nouvelles offres matchant un profil
+- [Transformations dbt en detail](docs/dbt_transformations.md) : Explication complete du pipeline de transformation (staging, intermediate, marts, seeds, tests)
 
 ## Auteur
 
