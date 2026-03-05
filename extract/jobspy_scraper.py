@@ -1,4 +1,4 @@
-"""Extracteur python-jobspy pour Indeed et Glassdoor."""
+"""Extracteur python-jobspy pour Indeed, Glassdoor et LinkedIn."""
 
 import logging
 from datetime import date
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def extract() -> pd.DataFrame:
-    """Scrape Indeed et Glassdoor via python-jobspy pour tous les mots-cles."""
+    """Scrape Indeed, Glassdoor et LinkedIn via python-jobspy pour tous les mots-cles."""
     from jobspy import scrape_jobs
 
     all_dfs = []
@@ -20,12 +20,13 @@ def extract() -> pd.DataFrame:
         try:
             logger.info(f"[JobSpy] Scraping '{keyword}'...")
             df = scrape_jobs(
-                site_name=["indeed", "glassdoor"],
+                site_name=["indeed", "glassdoor", "linkedin"],
                 search_term=keyword,
                 location="France",
                 results_wanted=100,
                 hours_old=168,  # 7 jours
                 country_indeed="France",
+                linkedin_fetch_description=True,
             )
             if df is not None and not df.empty:
                 all_dfs.append(df)
@@ -48,10 +49,10 @@ def extract() -> pd.DataFrame:
         'source': raw_df['site'].apply(lambda x: str(x).lower() if pd.notna(x) else 'indeed'),
         'raw_title': raw_df.get('title', pd.Series(dtype=str)),
         'company_name': raw_df.get('company', pd.Series(dtype=str)),
-        'location_city': raw_df.get('city', pd.Series(dtype=str)),
+        'location_city': raw_df.get('location', pd.Series(dtype=str)),
         'raw_description': raw_df.get('description', pd.Series(dtype=str)),
         'contract_type': raw_df.get('job_type', pd.Series(dtype=str)),
-        'experience_level': None,
+        'experience_level': raw_df.get('job_level', pd.Series(dtype=str)),
         'education_level': None,
         'salary_min': raw_df.get('min_amount', pd.Series(dtype=float)),
         'salary_max': raw_df.get('max_amount', pd.Series(dtype=float)),
