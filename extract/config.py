@@ -11,6 +11,8 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 FT_CLIENT_ID = os.getenv('FT_CLIENT_ID')
 FT_CLIENT_SECRET = os.getenv('FT_CLIENT_SECRET')
 NEON_DATABASE_URL = os.getenv('NEON_DATABASE_URL')
+SMTP_EMAIL = os.getenv('SMTP_EMAIL')
+SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
 
 # --- Parser NEON_DATABASE_URL pour extraire les composants individuels ---
 _parsed = urlparse(NEON_DATABASE_URL) if NEON_DATABASE_URL else None

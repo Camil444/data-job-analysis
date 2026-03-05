@@ -28,7 +28,8 @@ Sources                    Extract (Python)         Load (Neon)            Trans
 | Transformation  | dbt-core + dbt-postgres              |
 | Base de donnees | Neon PostgreSQL (serverless)          |
 | Orchestration   | GitHub Actions (cron quotidien)      |
-| Visualisation   | Next.js, Recharts                    |
+| Visualisation   | Next.js, Recharts, Vercel            |
+| Notifications   | Email (smtplib / Gmail SMTP)         |
 
 ## Sources de donnees
 
@@ -86,12 +87,12 @@ Sources                    Extract (Python)         Load (Neon)            Trans
 Dashboard Next.js avec 5 pages :
 
 - **Vue Globale** : treemap metiers, top skills, repartition contrats/regions/remote/sources, salaires par metier
-- **Data Analyst** : focus skills, outils BI/viz, salaire vs experience, heatmap skills x experience
-- **Data Engineer** : cloud wars (AWS/GCP/Azure), orchestrateurs, skills x cloud provider
-- **DS / ML / AI** : frameworks ML, GenAI vs ML classique, sous-profils DS/ML/AI
-- **Salaires** : distribution par metier, salaire vs nb skills, impact education/experience/remote
+- **Analyst** : focus Data/Business/BI Analyst, outils BI/viz, education, top entreprises
+- **Engineer** : focus Data/Analytics Engineer + Data Architect, cloud wars (AWS/GCP/Azure), orchestrateurs, filtre cloud
+- **DS / ML / AI** : frameworks ML, GenAI vs ML classique, sous-profils DS/ML/AI, heatmap skills x profil
+- **A propos** : glossaire, sources, methodologie, pipeline technique
 
-Filtres globaux : metier, contrat, remote, experience, source, region.
+Filtres globaux : contrat, experience, source, region. Filtres par page : metier, cloud. Dark/light mode.
 
 ## Prerequis
 
@@ -120,6 +121,8 @@ cp .env.example .env
 FT_CLIENT_ID=votre_client_id_france_travail
 FT_CLIENT_SECRET=votre_client_secret_france_travail
 NEON_DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
+SMTP_EMAIL=votre_email@gmail.com
+SMTP_PASSWORD=xxxx_xxxx_xxxx_xxxx
 ```
 
 ## Utilisation
@@ -168,6 +171,7 @@ data-job-analysis/
 |   |-- france_travail.py         # Extracteur API France Travail (OAuth2)
 |   |-- jobspy_scraper.py         # Extracteur python-jobspy (LinkedIn + Indeed)
 |   |-- load_to_db.py             # Chargement dans les tables staging Neon (avec dedup)
+|   |-- notify.py                # Notification email apres pipeline
 |
 |-- dbt_project/
 |   |-- dbt_project.yml
@@ -181,7 +185,7 @@ data-job-analysis/
 |   |   |-- exports/              # Vues d'export (titres non matches)
 |   |-- tests/                    # Tests custom
 |
-|-- dashboard/                    # Next.js app (gitignore)
+|-- dashboard/                    # Next.js app (deploye sur Vercel)
 |   |-- app/                      # Pages et API routes
 |   |-- components/               # Composants React reutilisables
 |   |-- lib/                      # DB connection, filtres, couleurs

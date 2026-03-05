@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from extract.config import get_neon_env_dict
 from extract.load_to_db import load_dataframe
+from extract.notify import send_report
 
 # Configurer le logging
 logging.basicConfig(
@@ -68,6 +69,9 @@ def run():
     for source, count in results.items():
         logger.info(f"  {source:20s} : {count}")
     logger.info("Pipeline termine.")
+
+    # --- Notification email ---
+    send_report(results)
 
 
 if __name__ == '__main__':
